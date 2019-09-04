@@ -21,8 +21,7 @@ function buildMetadata(sample) {
 
 });
   
-    // BONUS: Build the Gauge Chart
-    // buildGauge(data.WFREQ);
+    
 }
 
 function buildCharts(sample) {
@@ -44,7 +43,8 @@ function buildCharts(sample) {
       mode: `markers`,
       marker: {
         size: size,
-        color: color
+        color: color,
+        colorscale: "Earth",
       }
     };
 
@@ -55,26 +55,31 @@ function buildCharts(sample) {
       };
       Plotly.newPlot("bubble", data, layout);
   });
-
+  // @TODO: Build a Pie Chart
+    // HINT: You will need to use slice() to grab the top 10 sample_values,
+    // otu_ids, and labels (10 each).
   d3.json(`/samples/${sample}`).then(function(data){
     var values = data.sample_values.slice(0,10);
     var labels = data.otu_ids.slice(0,10);
     var display = data.otu_labels.slice(0,10);
+    //var hovertext = data.otu_labels.slice(0,10);
 
-    var pie_chart = [{
+    var pie_trace =[{
       values: values,
-      lables: labels,
+      labels: labels,
       hovertext: display,
-      type: "pie"
+      type: "pie",
+      textposition: "inside",
     }];
-    Plotly.newPlot('pie',pie_chart);
+    var layout={
+      title:"Bacteria pie chart"
+    }
+    Plotly.newPlot('pie', pie_trace, layout);
   });
 
   
 
-    // @TODO: Build a Pie Chart
-    // HINT: You will need to use slice() to grab the top 10 sample_values,
-    // otu_ids, and labels (10 each).
+    
 }
 
 function init() {
@@ -105,3 +110,5 @@ function optionChanged(newSample) {
 
 // Initialize the dashboard
 init();
+// BONUS: Build the Gauge Chart
+    // buildGauge(data.WFREQ);
